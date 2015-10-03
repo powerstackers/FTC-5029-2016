@@ -92,13 +92,13 @@ public class K9TeleOp extends OpMode {
 		 * that the names of the devices must match the names used when you
 		 * configured your robot and created the configuration file.
 		 */
-		
+
 		/*
 		 * For the demo Tetrix K9 bot we assume the following,
 		 *   There are two motors "motor_1" and "motor_2"
 		 *   "motor_1" is on the right side of the bot.
 		 *   "motor_2" is on the left side of the bot and reversed.
-		 *   
+		 *
 		 * We also assume that there are two servos "servo_1" and "servo_6"
 		 *    "servo_1" controls the arm joint of the manipulator.
 		 *    "servo_6" controls the claw joint of the manipulator.
@@ -225,7 +225,7 @@ public class K9TeleOp extends OpMode {
 			index = 16;
 		}
 		
-		double dScale = 0.0;
+		double dScale;
 		if (dVal < 0) {
 			dScale = -scaleArray[index];
 		} else {
