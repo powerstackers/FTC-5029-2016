@@ -18,7 +18,7 @@ import org.swerverobotics.library.interfaces.TeleOp;
 /**
  * Created by Derek on 12/12/2015.
  */
-public class ColorSensorSense extends OpMode {
+public class ColorSensorTest extends OpMode {
 
     ColorSensor colorSensor;
     TouchSensor touchSensor;

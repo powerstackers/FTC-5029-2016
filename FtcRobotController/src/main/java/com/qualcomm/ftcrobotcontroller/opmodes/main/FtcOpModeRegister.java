@@ -32,12 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes.main;
 
 import com.powerstackers.resq.opmodes.BlueAlianceOP;
-import com.powerstackers.resq.opmodes.ColorSensorSense;
+import com.powerstackers.resq.opmodes.ColorSensorTest;
 import com.powerstackers.resq.opmodes.ProtobotTeleop;
 import com.powerstackers.resq.opmodes.RedAlianceOP;
 import com.powerstackers.resq.opmodes.testbot1;
 import com.qualcomm.ftcrobotcontroller.opmodes.NullOp;
-import com.qualcomm.ftcrobotcontroller.opmodes.k9.K9IrSeeker;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -88,7 +87,7 @@ public class FtcOpModeRegister implements OpModeRegister {
         // You should use those on any class you want to register, rather than registering it here.
         manager.register("BlueAllianceOP", BlueAlianceOP.class);
         manager.register("RedAllianceOP", RedAlianceOP.class);
-        manager.register("ColorSensorSense", ColorSensorSense.class);
+        manager.register("ColorSensorTest", ColorSensorTest.class);
         manager.register("ProtobotOP", ProtobotTeleop.class);
         manager.register("testbot1", testbot1.class);
     }
