@@ -35,7 +35,6 @@ import com.powerstackers.resq.opmodes.BlueAlianceOP;
 import com.powerstackers.resq.opmodes.ColorSensorTest;
 import com.powerstackers.resq.opmodes.ProtobotTeleop;
 import com.powerstackers.resq.opmodes.RedAlianceOP;
-import com.powerstackers.resq.opmodes.testbot1;
 import com.qualcomm.ftcrobotcontroller.opmodes.NullOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
@@ -89,6 +88,5 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("RedAllianceOP", RedAlianceOP.class);
         manager.register("ColorSensorTest", ColorSensorTest.class);
         manager.register("ProtobotOP", ProtobotTeleop.class);
-        manager.register("testbot1", testbot1.class);
     }
 }
