@@ -2,9 +2,12 @@ package com.powerstackers.resq.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.swerverobotics.library.interfaces.Autonomous;
+
 /**
- * Created by Derek on 1/3/2016.
+ * @author Derek Helm
  */
+@Autonomous
 public class robotDance extends LinearOpMode {
 
     @Override

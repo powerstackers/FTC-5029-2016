@@ -7,11 +7,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.swerverobotics.library.ClassFactory;
-import org.swerverobotics.library.interfaces.TeleOp;
+import org.swerverobotics.library.interfaces.Autonomous;
 
 /**
  * @author Derek Helm
  */
+@Autonomous
 public class BlueAlianceOP extends OpMode {
 
     /*

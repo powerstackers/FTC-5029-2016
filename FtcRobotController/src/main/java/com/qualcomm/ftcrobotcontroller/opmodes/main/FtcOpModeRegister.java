@@ -77,16 +77,16 @@ public class FtcOpModeRegister implements OpModeRegister {
         /*
          * OTHER OPMODES:
          */
-        manager.register("NullOp", NullOp.class);
+//        manager.register("NullOp", NullOp.class);
 
         /*
          * POWERSTACKERS OPMODES:
          */
         // All of our opmodes make use of the annotations provided by the Swerve library.
         // You should use those on any class you want to register, rather than registering it here.
-        manager.register("BlueAllianceOP", BlueAlianceOP.class);
-        manager.register("RedAllianceOP", RedAlianceOP.class);
-        manager.register("ColorSensorTest", ColorSensorTest.class);
-        manager.register("ProtobotOP", ProtobotTeleop.class);
+//        manager.register("BlueAllianceOP", BlueAlianceOP.class);
+//        manager.register("RedAllianceOP", RedAlianceOP.class);
+//        manager.register("ColorSensorTest", ColorSensorTest.class);
+//        manager.register("ProtobotOP", ProtobotTeleop.class);
     }
 }

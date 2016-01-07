@@ -1,29 +1,25 @@
 package com.powerstackers.resq.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.swerverobotics.library.ClassFactory;
+import org.swerverobotics.library.interfaces.Disabled;
 import org.swerverobotics.library.interfaces.TeleOp;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.Direction.FORWARD;
-
 /**
- * Created by Derek on 10/10/2015.
+ * @author Derek Helm
  */
+@TeleOp
+@Disabled
 public class ProtobotTeleop extends OpMode {
 
-    /**
+    /*
      * Note: the configuration of the servos is such that
      * as the arm servo approaches 0, the arm position moves up (away from the floor).
      * Also, as the claw servo approaches 0, the claw opens up (drops the game element).
      */
-    /** TETRIX VALUES.
+    /* TETRIX VALUES.
      *
      */
 //    final static double servoRight_MIN_RANGE  = 0.20;
@@ -35,14 +31,14 @@ public class ProtobotTeleop extends OpMode {
 //    final static double servoBeacon_MIN_RANGE  = 0.00;
 //    final static double servoBeacon_MAX_RANGE  = 1.00;
 
-    /** amount to change the servo position by
+    /* amount to change the servo position by
      *
      */
 //    double servoRightDelta = 0.1;
 //    double servoLeftDelta = 0.1;
 //    double servoTapeDelta = 0.5;
 
-    /** position of servo <Value of Variable>
+    /* position of servo <Value of Variable>
      *
      */
 //    double servoRightPosition;
@@ -50,7 +46,7 @@ public class ProtobotTeleop extends OpMode {
 //    double servoTapePosition;
 //    double servoBeaconPosition;
 
-    /**Color Values
+    /*Color Values
      *
      */
     float hsvValues[] = {0, 0, 0};
@@ -78,7 +74,7 @@ public class ProtobotTeleop extends OpMode {
     public void init() {
 
 
-		/**
+		/*
 		 * Use the hardwareMap to get the dc motors and servos by name. Note
 		 * that the names of the devices must match the names used when you
 		 * configured your robot and created the configuration file.
@@ -90,7 +86,7 @@ public class ProtobotTeleop extends OpMode {
 //        colorSensor = ClassFactory.createSwerveColorSensor(this, this.hardwareMap.colorSensor.get("colorSensor"));
 //        colorSensor.enableLed(true);
 //        touchSensor = hardwareMap.touchSensor.get("touchSensor");
-        /**Motors
+        /*Motors
          *
          */
         motorBrush = hardwareMap.dcMotor.get("motorBrush");
@@ -102,7 +98,7 @@ public class ProtobotTeleop extends OpMode {
         motorBRight = hardwareMap.dcMotor.get("motorBRight");
         motorBLeft = hardwareMap.dcMotor.get("motorBLeft");
         motorBRight.setDirection(DcMotor.Direction.REVERSE);
-        /**Servos
+        /*Servos
          *
          */
 //        servoLeft = hardwareMap.servo.get("servoLeft");
@@ -122,33 +118,33 @@ public class ProtobotTeleop extends OpMode {
     @Override
     public void loop() {
 
-		/**
+		/*
 		 * Gamepad 1
 		 *
 		 * Gamepad 1 controls the motors via the left stick, and it controls the
 		 * lift/Brushes via the a,b, x, y buttons
 		 */
 
-        /** tank drive
+        /* tank drive
          * note that if y equal -1 then joystick is pushed all of the way forward.
          */
         float left = -gamepad1.left_stick_y;
         float right = -gamepad1.right_stick_y;
 
-        /** clip the right/left values so that the values never exceed +/- 1
+        /* clip the right/left values so that the values never exceed +/- 1
          *
          */
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
 
-        /** scale the joystick value to make it easier to control
+        /* scale the joystick value to make it easier to control
          * the robot more precisely at slower speeds.
          */
         right = (float) scaleInput(right);
         left = (float) scaleInput(left);
 
 
-        /** lift controls
+        /* lift controls
          *
          */
 
@@ -172,7 +168,7 @@ public class ProtobotTeleop extends OpMode {
             motorBrush.setPower(0);
         }
 
-        /** update the position of the arm.
+        /* update the position of the arm.
          *
          */
 //        if (gamepad2.y) {
@@ -213,7 +209,7 @@ public class ProtobotTeleop extends OpMode {
 //        }
 
 
-        /** clip the position values so that they never exceed their allowed range.
+        /* clip the position values so that they never exceed their allowed range.
          *
          */
 //        servoRightPosition = Range.clip(servoRightPosition, servoRight_MIN_RANGE, servoRight_MAX_RANGE);
@@ -221,7 +217,7 @@ public class ProtobotTeleop extends OpMode {
 //        servoTapePosition = Range.clip(servoTapePosition, servoTape_MIN_RANGE, servoTape_MAX_RANGE);
 //        servoBeaconPosition = Range.clip(servoBeaconPosition, servoBeacon_MIN_RANGE, servoBeacon_MAX_RANGE);
 
-        /**write position values to the wrist and claw servo
+        /*write position values to the wrist and claw servo
          *
          */
 //        servoRight.setPosition(servoRightPosition);
@@ -229,7 +225,7 @@ public class ProtobotTeleop extends OpMode {
 //        servoTape.setPosition(servoTapePosition);
 //        servoBeacon.setPosition(servoBeaconPosition);
 
-        /** write the values to the motors
+        /* write the values to the motors
          *
          */
         motorFRight.setPower(right);
@@ -237,10 +233,8 @@ public class ProtobotTeleop extends OpMode {
         motorFLeft.setPower(left);
         motorBLeft.setPower(left);
 
-		/**
-		 * Send telemetry data back to driver station. N
-        motorFRight.setPower(right);
-        motorFLeft.setPower(left);ote that if we are using
+		/*
+		 * Send telemetry data back to driver station. Note that if we are using
 		 * a legacy NXT-compatible motor controller, then the getPower() method
 		 * will return a null value. The legacy NXT-compatible motor controllers
 		 * are currently write only.
@@ -248,7 +242,7 @@ public class ProtobotTeleop extends OpMode {
         telemetry.addData("Text", "*** Robot Data***");
         telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
-        /**Color Telemetry
+        /*Color Telemetry
          *
          */
 //        telemetry.addData("Clear", colorSensor.alpha());
@@ -259,7 +253,7 @@ public class ProtobotTeleop extends OpMode {
         //Object direction = motorLift.getDirection();
         //telemetry.addData("direction", "direction: " + String.valueOf(direction));
 
-        /**servo Telemetry
+        /*servo Telemetry
          *
          */
 //        Object Leftposition = servoLeft.getPosition();
@@ -271,7 +265,7 @@ public class ProtobotTeleop extends OpMode {
 
         }
 
-    /*
+    /**
      * Code to run when the op mode is first disabled goes here
      *
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#stop()
@@ -282,7 +276,7 @@ public class ProtobotTeleop extends OpMode {
     }
 
 
-    /*
+    /**
      * This method scales the joystick input so for low joystick values, the
      * scaled value is less than linear.  This is to make it easier to drive
      * the robot more precisely at slower speeds.
