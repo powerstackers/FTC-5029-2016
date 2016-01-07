@@ -55,7 +55,7 @@ public class BlueAlianceOP extends OpMode {
         //Sensors
         colorSensor = ClassFactory.createSwerveColorSensor(this, this.hardwareMap.colorSensor.get("colorSensor"));
         colorSensor.enableLed(true);
-//        touchSensor = hardwareMap.touchSensor.get("touchSensor");
+
         /*
          * Servos
          */
@@ -92,16 +92,6 @@ public class BlueAlianceOP extends OpMode {
          * write position values to the servos
          */
         servoBeacon.setPosition(servoBeaconPosition);
-
-        /*
-         * Send telemetry data back to driver station. N
-         motorFRight.setPower(right);
-         motorFLeft.setPower(left);ote that if we are using
-         * a legacy NXT-compatible motor controller, then the getPower() method
-         * will return a null value. The legacy NXT-compatible motor controllers
-         * are currently write only.
-         */
-        telemetry.addData("Text", "*** Robot Data***");
 
         /*
          * Color Telemetry
