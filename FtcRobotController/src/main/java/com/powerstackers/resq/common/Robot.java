@@ -24,9 +24,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.Range;
 
 import org.swerverobotics.library.ClassFactory;
 
@@ -36,29 +36,28 @@ import org.swerverobotics.library.ClassFactory;
  */
 public class Robot {
 
-    // Final constants
-    private static final double CRS_REVERSE = 0.0;
-    private static final double CRS_STOP    = 0.5;
-    private static final double CRS_FORWARD = 1.0;
-    private static final double LIFT_SPEED  = 1.0;
-    private static final double BRUSH_SPEED = 1.0;
-
     private DcMotor motorLeftA;
     private DcMotor motorLeftB;
     private DcMotor motorRightA;
     private DcMotor motorRightB;
     private DcMotor motorBrush;
     private DcMotor motorLift;
+    private DcMotor motorWinchLeft;
+    private DcMotor motorWinchRight;
 
     private Servo servoTapeMeasure;
-    private Servo servoBeacon;
-    private Servo servoRight;
-    private Servo servoLeft;
+//    private Servo servoBeacon;
+//    private Servo servoHopperRight;
+    private Servo servoHopperLeft;
+    private Servo servoClimberFlipper;
+    private Servo servoChurroLeft;
+    private Servo servoChurroRight;
 
     private DeviceInterfaceModule dim;
     private ColorSensor sensorColor;
-    private TouchSensor sensorTouch;
-    public OpticalDistanceSensor opticalSensor;
+//    private TouchSensor sensorTouch;
+    private GyroSensor sensorGyro;
+//    public OpticalDistanceSensor opticalSensor;
 
     /**
      * Construct a Robot object.
@@ -71,22 +70,52 @@ public class Robot {
         motorRightB = mode.hardwareMap.dcMotor.get("motorBRight");
         motorBrush  = mode.hardwareMap.dcMotor.get("motorBrush");
         motorLift   = mode.hardwareMap.dcMotor.get("motorLift");
+        motorWinchLeft = mode.hardwareMap.dcMotor.get("motorLHang");
+        motorWinchRight = mode.hardwareMap.dcMotor.get("motorRHang");
 
         motorLift.setDirection(DcMotor.Direction.REVERSE);
         motorRightA.setDirection(DcMotor.Direction.REVERSE);
         motorRightB.setDirection(DcMotor.Direction.REVERSE);
+        motorWinchRight.setDirection(DcMotor.Direction.REVERSE);
 
         servoTapeMeasure = mode.hardwareMap.servo.get("servoTapeMeasure");
-        servoBeacon      = mode.hardwareMap.servo.get("servoBeacon");
-        servoRight       = mode.hardwareMap.servo.get("servoRight");
-        servoLeft        = mode.hardwareMap.servo.get("servoLeft");
+//        servoBeacon      = mode.hardwareMap.servo.get("servoBeacon");
+//        servoHopperRight = mode.hardwareMap.servo.get("servoHopperRight");
+        servoHopperLeft = mode.hardwareMap.servo.get("servoHopperLeft");
+        servoClimberFlipper = mode.hardwareMap.servo.get("servoClimbers");
+        servoChurroLeft = mode.hardwareMap.servo.get("servoChurroLeft");
+        servoChurroRight = mode.hardwareMap.servo.get("servoChurroRight");
+
+        servoHopperLeft.setPosition(RobotConstants.HOPPER_LEFT_CLOSE);
+//        servoHopperRight.setPosition(RobotConstants.HOPPER_RIGHT_CLOSE);
+        servoClimberFlipper.setPosition(RobotConstants.CLIMBER_EXTEND);
+        servoChurroRight.setPosition(RobotConstants.CHURRO_RIGHT_OPEN);
+        servoChurroLeft.setPosition(RobotConstants.CHURRO_LEFT_OPEN);
 
         dim = mode.hardwareMap.deviceInterfaceModule.get("dim");
         sensorColor = ClassFactory.createSwerveColorSensor(mode,
                 mode.hardwareMap.colorSensor.get("sensorColor"));
         sensorColor.enableLed(true);
-        opticalSensor = mode.hardwareMap.opticalDistanceSensor.get("opticalDistance");
+//        opticalSensor = mode.hardwareMap.opticalDistanceSensor.get("opticalDistance");
+        sensorGyro = mode.hardwareMap.gyroSensor.get("sensorGyro");
 
+    }
+
+    /**
+     * Initialize the robot's servos and sensors.
+     */
+    public void initializeRobot() /*throws InterruptedException */{
+//        servoBeacon.setPosition(RobotConstants.BEACON_RESTING);
+        servoClimberFlipper.setPosition(RobotConstants.CLIMBER_EXTEND);
+        servoHopperLeft.setPosition(RobotConstants.HOPPER_LEFT_CLOSE);
+//        servoHopperRight.setPosition(RobotConstants.HOPPER_RIGHT_CLOSE);
+        servoChurroRight.setPosition(RobotConstants.CHURRO_RIGHT_OPEN);
+        servoChurroLeft.setPosition(RobotConstants.CHURRO_LEFT_OPEN);
+        //sensorGyro.calibrate();
+        // Give the gyroscope some time to calibrate
+//        while (sensorGyro.isCalibrating()) {
+//            Thread.sleep(50L);
+//        }
     }
 
     /**
@@ -120,7 +149,7 @@ public class Robot {
      * @param setting MotorSetting indicating the direction.
      */
     public void setBrush(MotorSetting setting) {
-        toggleMotor(motorBrush, setting, BRUSH_SPEED);
+        toggleMotor(motorBrush, setting, RobotConstants.BRUSH_SPEED);
     }
 
     /**
@@ -128,7 +157,7 @@ public class Robot {
      * @param setting MotorSetting enum indicating the direction.
      */
     public void setLift(MotorSetting setting) {
-        toggleMotor(motorLift, setting, LIFT_SPEED);
+        toggleMotor(motorLift, setting, RobotConstants.LIFT_SPEED);
     }
 
     /**
@@ -162,16 +191,150 @@ public class Robot {
     private void toggleCRServo(Servo toToggle, MotorSetting setting) {
         switch (setting) {
             case REVERSE:
-                toToggle.setPosition(CRS_REVERSE);
+                toToggle.setPosition(RobotConstants.CRS_REVERSE);
                 break;
             case STOP:
-                toToggle.setPosition(CRS_STOP);
+                toToggle.setPosition(RobotConstants.CRS_STOP);
                 break;
             case FORWARD:
-                toToggle.setPosition(CRS_FORWARD);
+                toToggle.setPosition(RobotConstants.CRS_FORWARD);
                 break;
             default:
-                toToggle.setPosition(CRS_STOP);
+                toToggle.setPosition(RobotConstants.CRS_STOP);
         }
+    }
+
+    /**
+     * Trim a servo value between the minimum and maximum ranges.
+     * @param servoValue Value to trim.
+     * @return A raw double with the trimmed value.
+     */
+    private double trimServoValue(double servoValue) {
+        return Range.clip(servoValue, 0.0, 1.0);
+    }
+
+    /**
+     * Tap the beacon on the correct side.
+     * @param allianceColor The color that we are currently playing as.
+     */
+    public void tapBeacon(AllianceColor allianceColor) {
+
+        AllianceColor dominantColor;
+        double positionBeaconServo;
+
+        // Detect the color shown on the beacon's left half, and record it.
+        if (sensorColor.red() > sensorColor.blue()) {
+            dominantColor = AllianceColor.RED;
+        } else {
+            dominantColor = AllianceColor.BLUE;
+        }
+
+        // Tap the correct side based on the dominant color.
+        if (dominantColor == allianceColor) {
+            positionBeaconServo = RobotConstants.BEACON_TAP_LEFT;
+        } else {
+            positionBeaconServo = RobotConstants.BEACON_TAP_RIGHT;
+        }
+
+        // Trim the servo value and set the servo position.
+        positionBeaconServo = trimServoValue(positionBeaconServo);
+//        servoBeacon.setPosition(positionBeaconServo);
+    }
+
+    /**
+     * Set the right hopper door to open or close.
+     * @param doorSetting DoorSetting to set the door to.
+     *//*
+    public void setHopperRight(DoorSetting doorSetting) {
+        if (doorSetting == DoorSetting.OPEN) {
+            servoHopperRight.setPosition(RobotConstants.HOPPER_RIGHT_OPEN);
+        } else {
+            servoHopperRight.setPosition(RobotConstants.HOPPER_RIGHT_CLOSE);
+        }
+    }*/
+
+    /**
+     * Set the left hopper door to open or close.
+     * @param doorSetting DoorSetting to set the door to.
+     */
+    public void setHopperLeft(DoorSetting doorSetting) {
+        if (doorSetting == DoorSetting.OPEN) {
+            servoHopperLeft.setPosition(RobotConstants.HOPPER_LEFT_OPEN);
+        } else {
+            servoHopperLeft.setPosition(RobotConstants.HOPPER_LEFT_CLOSE);
+        }
+    }
+
+    public void setAllianceHopper(DoorSetting doorSetting, AllianceColor allianceColor) {
+        // If we are red, we should dump to the left. Blue, to the right.
+        if (allianceColor == AllianceColor.RED) {
+            servoHopperLeft.setPosition((doorSetting==DoorSetting.OPEN)?
+                    RobotConstants.HOPPER_LEFT_OPEN : RobotConstants.HOPPER_LEFT_CLOSE);
+        } else {
+            servoHopperLeft.setPosition((doorSetting==DoorSetting.OPEN)?
+                    RobotConstants.HOPPER_RIGHT_OPEN : RobotConstants.HOPPER_RIGHT_CLOSE);
+        }
+    }
+
+    /**
+     * Set the climber flipping device to either extended or retracted position.
+     * In this case, the OPEN setting indicates extended, and the CLOSED setting is its resting
+     * position.
+     * @param doorSetting DoorSetting indicating the position.
+     */
+    public void setClimberFlipper(DoorSetting doorSetting) {
+        if (doorSetting == DoorSetting.OPEN) {
+            servoClimberFlipper.setPosition(RobotConstants.CLIMBER_RETRACT);
+        } else {
+            servoClimberFlipper.setPosition(RobotConstants.CLIMBER_EXTEND);
+        }
+    }
+
+    /**
+     * Set the position of the churro grabber servos.
+     * In this case, the OPEN position is the retracted, <b>not grabbing</b> position, and close is
+     * the opposite.
+     * @param doorSetting DoorSetting indicating the position.
+     */
+    public void setChurroGrabbers(DoorSetting doorSetting) {
+        if (doorSetting == DoorSetting.OPEN) {
+            servoChurroLeft.setPosition(RobotConstants.CHURRO_LEFT_OPEN);
+            servoChurroRight.setPosition(RobotConstants.CHURRO_RIGHT_OPEN);
+        } else {
+            servoChurroLeft.setPosition(RobotConstants.CHURRO_LEFT_CLOSE);
+            servoChurroRight.setPosition(RobotConstants.CHURRO_RIGHT_CLOSE);
+        }
+    }
+
+    /**
+     * Set the winch motors.
+     * @param motorSetting MotorSetting indicating the direction.
+     */
+    public void setWinch(MotorSetting motorSetting) {
+        toggleMotor(motorWinchLeft, motorSetting, RobotConstants.WINCH_SPEED);
+        toggleMotor(motorWinchRight, motorSetting, RobotConstants.WINCH_SPEED);
+    }
+
+    /**
+     * Move the robot a specific distance forwards or backwards.
+     * To specify the distance, pass a double representing the number of <b>inches</b> that you would
+     * like the robot to move. To move backwards, simply pass a negative number.
+     * @param distance An integer representing the distance to move.
+     */
+    public void moveDistance(int distance) {
+        motorLeftA.setTargetPosition(motorLeftA.getCurrentPosition() + distance);
+        motorRightA.setTargetPosition(motorRightA.getCurrentPosition() + distance);
+    }
+
+    /**
+     * Turn the robot a specific number of degrees clockwise or counter-clockwise.
+     * To specify the number of degrees to turn, pass a double representing the number of
+     * <b>degrees</b> to turn. It should be noted that the degrees you turn assume standard position
+     * when looking at the robot from above. In other words, passing a negative number will turn
+     * clockwise, and a positive number will turn counter-clockwise.
+     * @param degrees A double representing the distance to turn.
+     */
+    public void turnDegrees(double degrees) {
+        // TODO Actually make this method work
     }
 }

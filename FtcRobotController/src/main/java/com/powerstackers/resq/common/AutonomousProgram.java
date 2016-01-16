@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2015 Powerstackers
  *
- * Different settings for motors.
+ * Code to run our 2015-16 robot.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,32 @@
 
 package com.powerstackers.resq.common;
 
+import org.swerverobotics.library.SynchronousOpMode;
+
 /**
- * Enum with values for continuous rotation servos: forward, stop, and reverse.
  * @author Jonathan Thomas
  */
-public enum MotorSetting {
-    REVERSE, STOP, FORWARD
+public class AutonomousProgram extends SynchronousOpMode {
+
+    AllianceColor allianceColor;
+    Robot robot;
+
+    public AutonomousProgram(AllianceColor allianceColor) {
+        this.allianceColor = allianceColor;
+        this.robot = new Robot(this);
+    }
+
+    /**
+     * Run the actual program.
+     */
+    @Override
+    protected void main() throws InterruptedException {
+        // Initialize any sensors and servos
+        robot.initializeRobot();
+        // Wait for the start of the match
+        this.waitForStart();
+
+        // Run any actions we desire
+        robot.tapBeacon(allianceColor);
+    }
 }

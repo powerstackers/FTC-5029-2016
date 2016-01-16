@@ -30,12 +30,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes.main;
-
-import com.powerstackers.resq.opmodes.BlueAlianceOP;
-import com.powerstackers.resq.opmodes.ColorSensorTest;
-import com.powerstackers.resq.opmodes.ProtobotTeleop;
-import com.powerstackers.resq.opmodes.RedAlianceOP;
-import com.qualcomm.ftcrobotcontroller.opmodes.NullOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -86,7 +80,10 @@ public class FtcOpModeRegister implements OpModeRegister {
         // You should use those on any class you want to register, rather than registering it here.
 //        manager.register("BlueAllianceOP", BlueAlianceOP.class);
 //        manager.register("RedAllianceOP", RedAlianceOP.class);
-//        manager.register("ColorSensorTest", ColorSensorTest.class);
+//        manager.register("ColorSensorSense", ColorSensorSense.class);
 //        manager.register("ProtobotOP", ProtobotTeleop.class);
+//      manager.register("Purple Pencil", PurplePencil.class);
+//        manager.register("Tedbot", Tedbot.class);
+
     }
 }

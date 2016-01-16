@@ -10,9 +10,9 @@
 * 2: motorBRight
 
 ## Motor controller 3
-* Serial no: XXXXXXXX
-* 1: motorWinch
-* 2: 
+* Serial no:AL00UWHD
+* 1: motorLHang
+* 2: motorRHang
 
 ## Motor controller 4
 * Serial no: AL00UYTB
@@ -20,7 +20,15 @@
 * 2: motorBrush
 
 ## Servo controller
-* 1: servoTapeExtend
+* Serial no: AI02QTJ2
+* 1: servoTapeMeasure
 * 2: servoTapeTilt
 * 3: servoHopperLeft
-* 4: servoHopperRight
+* 4: servoChurroLeft
+* 5: servoClimbers
+* 6: servoChurroRight
+
+## Device Interface Module
+* Serial no: AI02RI51
+* i2c 4: sensorGyro
+* i2c 5: sensorColor

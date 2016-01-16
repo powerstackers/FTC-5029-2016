@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2015 Powerstackers
  *
- * Different settings for motors.
+ * Code to run our 2015-16 robot.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,19 @@
  *
  */
 
-package com.powerstackers.resq.common;
+package com.powerstackers.resq.opmodes.autonomous;
+
+import com.powerstackers.resq.common.AllianceColor;
+import com.powerstackers.resq.common.AutonomousProgram;
+
+import org.swerverobotics.library.interfaces.Autonomous;
 
 /**
- * Enum with values for continuous rotation servos: forward, stop, and reverse.
  * @author Jonathan Thomas
  */
-public enum MotorSetting {
-    REVERSE, STOP, FORWARD
+@Autonomous(name = "Blue autonomous", group = "Powerstackers")
+public class BlueAutonomous extends AutonomousProgram {
+    public BlueAutonomous() {
+        super(AllianceColor.BLUE);
+    }
 }

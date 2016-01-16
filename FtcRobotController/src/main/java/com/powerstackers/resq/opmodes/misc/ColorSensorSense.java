@@ -1,20 +1,24 @@
-package com.powerstackers.resq.opmodes;
+package com.powerstackers.resq.opmodes.misc;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.view.View;
+
+import com.qualcomm.ftcrobotcontroller.R;
+import com.qualcomm.hardware.ModernRoboticsI2cColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.swerverobotics.library.ClassFactory;
-import org.swerverobotics.library.interfaces.Disabled;
 import org.swerverobotics.library.interfaces.TeleOp;
 
 /**
- * @author Derek Helm
+ * Created by Derek on 12/12/2015.
  */
-@TeleOp
-@Disabled
-public class ColorSensorTest extends OpMode {
+public class ColorSensorSense extends OpMode {
 
     ColorSensor colorSensor;
     TouchSensor touchSensor;

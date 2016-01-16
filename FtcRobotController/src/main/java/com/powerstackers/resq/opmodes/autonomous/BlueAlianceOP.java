@@ -1,19 +1,19 @@
-package com.powerstackers.resq.opmodes;
+package com.powerstackers.resq.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.swerverobotics.library.ClassFactory;
-import org.swerverobotics.library.interfaces.Autonomous;
+import org.swerverobotics.library.interfaces.TeleOp;
 
 /**
  * @author Derek Helm
  */
-@Autonomous
-public class RedAlianceOP extends OpMode {
+public class BlueAlianceOP extends OpMode {
 
     /*
      * TETRIX VALUES.
@@ -36,8 +36,12 @@ public class RedAlianceOP extends OpMode {
     ColorSensor colorSensor;
     //    TouchSensor touchSensor;
     Servo servoBeacon;
+    DcMotor motorFRight;
+    DcMotor motorFLeft;
+    DcMotor motorBRight;
+    DcMotor motorBLeft;
 
-    public RedAlianceOP() {
+    public BlueAlianceOP() {
 
     }
 
@@ -57,12 +61,22 @@ public class RedAlianceOP extends OpMode {
         colorSensor = ClassFactory.createSwerveColorSensor(this, this.hardwareMap.colorSensor.get("colorSensor"));
         colorSensor.enableLed(true);
 //        touchSensor = hardwareMap.touchSensor.get("touchSensor");
-
         /*
          * Servos
          */
         servoBeacon = hardwareMap.servo.get("servoBeacon");
         servoBeaconPosition = 0.50;
+
+        /*
+         * Motors
+         */
+        motorFRight = hardwareMap.dcMotor.get("motorFRight");
+        motorFLeft = hardwareMap.dcMotor.get("motorFLeft");
+        motorFRight.setDirection(DcMotor.Direction.REVERSE);
+        motorBRight = hardwareMap.dcMotor.get("motorBRight");
+        motorBLeft = hardwareMap.dcMotor.get("motorBLeft");
+        motorBRight.setDirection(DcMotor.Direction.REVERSE);
+
 
     }
 
@@ -75,14 +89,16 @@ public class RedAlianceOP extends OpMode {
     public void loop() {
 
         //ColorSensor Controls
-        if (colorSensor.blue() > colorSensor.red()) {
+        if (colorSensor.red() > colorSensor.blue()) {
             servoBeaconPosition = 0.20;
 
-        } else if (colorSensor.red() > colorSensor.blue()) {
+        } else if (colorSensor.blue() > colorSensor.red()) {
             servoBeaconPosition = 0.80;
         } else {
             servoBeaconPosition = 0.50;
         }
+
+
 
 
         /*
@@ -112,7 +128,6 @@ public class RedAlianceOP extends OpMode {
         telemetry.addData("Red  ", colorSensor.red());
         telemetry.addData("Green", colorSensor.green());
         telemetry.addData("Blue ", colorSensor.blue());
-        telemetry.addData("Hue", hsvValues[0]);
 
         /*
          * servo Telemetry
