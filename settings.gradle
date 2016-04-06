@@ -1,5 +1,6 @@
-include ':SwerveRoboticsLibrary'
 include ':opencv-java'
 include ':ftc-visionlib'
+include ':SwerveRoboticsLibrary'
+project(':SwerveRoboticsLibrary').projectDir = new File(settingsDir, '../swervelib/SwerveRoboticsLibrary')
 // FTC Apps
 include (':FtcRobotController')
