@@ -4,6 +4,14 @@ android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
 
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('libs/ftc.debug.keystore')
+            storePassword 'android'
+        }
+    }
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 21
@@ -16,6 +24,9 @@ android {
         debug {
             debuggable true
         }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
 repositories {
