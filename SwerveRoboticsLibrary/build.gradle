@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    compile files('extras/android/support/android-support-v4.jar')
+    compile files('support/v4/android-support-v4.jar')
     compile(name: 'RobotCore-release', ext: 'aar')
     compile(name: 'Hardware-release', ext: 'aar')
     compile(name: 'FtcCommon-release', ext: 'aar')
